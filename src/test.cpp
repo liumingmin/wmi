@@ -10,6 +10,7 @@
 
 #include <wmi.hpp>
 #include <wmiclasses.hpp>
+#include <wmiextend.hpp>
 
 using std::cerr;
 using std::cout;
@@ -31,6 +32,19 @@ int main(int /*argc*/, char */*args*/[])
 		cout<<"Product: "<<product.Name<<" UUID:"<<product.UUID<<endl;
 		cout<<"Architecture: "<<os_info.OSArchitecture<<std::endl;
 		cout<<"Roles: "<<endl;
+
+        auto sns = GetDriveSerialNumbersByVolName("c:");
+        for (auto sn : sns)
+        {
+            cout << "system sn: " << sn << std::endl;
+        }
+
+        auto macs = GetMacAddresses(0, true);
+        for (auto mac : macs)
+        {
+            cout << "mac address : " << mac << std::endl;
+        }
+
 		for(const string &role : computer.Roles)
 		{
 			cout<<" - "<<role<<std::endl;

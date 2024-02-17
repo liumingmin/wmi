@@ -887,7 +887,7 @@ struct Win32_LogicalDisk
 	std::string InstallDate;
 	int LastErrorCode;
 	int MaximumComponentLength;
-	int MediaType;
+    std::string MediaType;
 	std::string Name;
 	std::string NumberOfBlocks;
 	std::string PNPDeviceID;

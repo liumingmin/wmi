@@ -112,4 +112,25 @@ namespace Wmi
 
         return serialNumbers;
     }
+
+    std::map<std::string, int> GetDriverSnAndMediaType()
+    {
+        std::map<std::string, int> snToMediaType;
+
+        Wmi::WmiResult physicalDiskResult;
+        Wmi::query("SELECT * FROM MSFT_PhysicalDisk", "microsoft\\windows\\storage", physicalDiskResult);
+
+        for (int i = 0; i < physicalDiskResult.size(); i++)
+        {
+            std::string serialNumber;
+            int mediaType=0;
+
+            physicalDiskResult.extract(i, "SerialNumber", serialNumber);
+            physicalDiskResult.extract(i, "MediaType", mediaType); //            0 Unspecified 3 HDD 4 SSD 5 SCM
+
+            snToMediaType.emplace(serialNumber, mediaType);
+        }
+
+        return snToMediaType;
+    }
 }

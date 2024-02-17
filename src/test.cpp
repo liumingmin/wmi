@@ -33,10 +33,16 @@ int main(int /*argc*/, char */*args*/[])
 		cout<<"Architecture: "<<os_info.OSArchitecture<<std::endl;
 		cout<<"Roles: "<<endl;
 
-        auto sns = GetDriveSerialNumbersByVolName("c:");
+        auto sns = GetDriveSerialNumbersByVolName("C:");
         for (auto sn : sns)
         {
             cout << "system sn: " << sn << std::endl;
+        }
+
+        auto snToMediaType = GetDriverSnAndMediaType();
+        for (auto iter : snToMediaType)
+        {
+            cout << "sn: " << iter.first<< " media type: " << iter.second << std::endl;
         }
 
         auto macs = GetMacAddresses(0, true);

@@ -33,7 +33,7 @@ int main(int /*argc*/, char */*args*/[])
 		cout<<"Architecture: "<<os_info.OSArchitecture<<std::endl;
 		cout<<"Roles: "<<endl;
 
-        auto sns = GetDriveSerialNumbersByVolName("C:");
+        auto sns = GetDriveSerialNumbersByVolName("D:");
         for (auto sn : sns)
         {
             cout << "system sn: " << sn << std::endl;

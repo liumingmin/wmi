@@ -9,6 +9,9 @@
 
 #include <string>
 #include <type_traits>
+#include <algorithm> 
+#include <cctype>
+#include <locale>
 
 #include <wmiexception.hpp>
 #include <wmiresult.hpp>
@@ -79,6 +82,20 @@ namespace Wmi
         return macAddresses;
     }
 
+    // trim from start (in place)
+    inline void ltrimstr(std::string &s) {
+        s.erase(s.begin(), std::find_if(s.begin(), s.end(), [](unsigned char ch) {
+            return !std::isspace(ch);
+        }));
+    }
+
+    // trim from end (in place)
+    inline void rtrimstr(std::string &s) {
+        s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char ch) {
+            return !std::isspace(ch);
+        }).base(), s.end());
+    }
+
     std::vector<std::string> GetDriveSerialNumbersByVolName(const std::string& volName)
     {
         std::vector<std::string> serialNumbers;
@@ -104,9 +121,14 @@ namespace Wmi
             for (int j = 0; j < disks.size(); j++)
             {
                 std::string diskSerialNum;
+
                 disks.extract(j, "SerialNumber", diskSerialNum);
 
-                serialNumbers.emplace_back(std::move(diskSerialNum));
+                ltrimstr(diskSerialNum);
+                rtrimstr(diskSerialNum);
+
+                if(!diskSerialNum.empty())
+                    serialNumbers.emplace_back(std::move(diskSerialNum));
             }
         }
 
@@ -127,6 +149,9 @@ namespace Wmi
 
             physicalDiskResult.extract(i, "SerialNumber", serialNumber);
             physicalDiskResult.extract(i, "MediaType", mediaType); //            0 Unspecified 3 HDD 4 SSD 5 SCM
+
+            ltrimstr(serialNumber);
+            rtrimstr(serialNumber);
 
             snToMediaType.emplace(serialNumber, mediaType);
         }

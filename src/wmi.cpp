@@ -364,7 +364,7 @@ void Wmi::query(const string& q, const string& p, WmiResult &out)
 	HRESULT hr = CoInitialize(nullptr);
 	if (FAILED(hr))
 	{
-		throw WmiException("The COM library is already initialized on this thread", hr);
+		//throw WmiException("The COM library is already initialized on this thread", hr);
 	}
 
 	IWbemLocator *pLocator;

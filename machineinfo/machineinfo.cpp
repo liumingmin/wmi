@@ -6,20 +6,25 @@
 
 int SSG_GetDiskType(const char* szVolName, int* pnDiskType)
 {
-    auto sns = Wmi::GetDriveSerialNumbersByVolName(szVolName);
-    if(sns.empty())
+    try
     {
-        return 2;
-    }
+        auto sns = Wmi::GetDriveSerialNumbersByVolName(szVolName);
+        if(sns.empty())
+        {
+            return 2;
+        }
 
-    auto snToMediaType = Wmi::GetDriverSnAndMediaType();
-    auto iter = snToMediaType.find(sns[0]);
-    if (iter == snToMediaType.end())
+        auto snToMediaType = Wmi::GetDriverSnAndMediaType();
+        auto iter = snToMediaType.find(sns[0]);
+        if (iter == snToMediaType.end())
+        {
+            return 3;
+        }
+
+        *pnDiskType = iter->second;
+    }catch(const std::exception&)
     {
-        return 3;
+        return 4;
     }
-
-    *pnDiskType = iter->second;
-
     return 0;
 }

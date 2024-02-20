@@ -376,7 +376,7 @@ void Wmi::query(const string& q, const string& p, WmiResult &out)
 		pLocator = createWbemLocator();
 	} catch (const WmiException &) {
 		CoUninitialize();
-		throw;
+        return;
 	}
 
 	//Open connection to computer
@@ -385,7 +385,7 @@ void Wmi::query(const string& q, const string& p, WmiResult &out)
 	} catch (const WmiException &) {
 		pLocator->Release(); 
 		CoUninitialize();
-		throw;
+        return;
 	}
 
 	//Execute the query
@@ -395,7 +395,7 @@ void Wmi::query(const string& q, const string& p, WmiResult &out)
 		pServices->Release();
 		pLocator->Release(); 
 		CoUninitialize();
-		throw;
+        return;
 	}
 
 	try {
@@ -415,7 +415,7 @@ void Wmi::query(const string& q, const string& p, WmiResult &out)
 		pServices->Release();
 		pLocator->Release(); 
 		CoUninitialize();
-		throw;
+        return;
 	}
 	
 	pClassObject->Release();

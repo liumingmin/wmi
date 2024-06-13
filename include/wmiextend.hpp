@@ -158,4 +158,28 @@ namespace Wmi
 
         return snToMediaType;
     }
+
+    std::map<std::string, std::string> GetDriverSnAndFriendlyName()
+    {
+        std::map<std::string, std::string> snToFriendlyName;
+
+        Wmi::WmiResult physicalDiskResult;
+        Wmi::query("SELECT * FROM MSFT_PhysicalDisk", "microsoft\\windows\\storage", physicalDiskResult);
+
+        for (int i = 0; i < physicalDiskResult.size(); i++)
+        {
+            std::string serialNumber;
+            std::string friendlyName;
+
+            physicalDiskResult.extract(i, "SerialNumber", serialNumber);
+            physicalDiskResult.extract(i, "FriendlyName", friendlyName);
+
+            ltrimstr(serialNumber);
+            rtrimstr(serialNumber);
+
+            snToFriendlyName.emplace(serialNumber, friendlyName);
+        }
+
+        return snToFriendlyName;
+    }
 }
